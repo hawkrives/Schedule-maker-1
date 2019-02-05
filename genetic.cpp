@@ -224,10 +224,7 @@ int main() {
 
     vector<vector<course>> top10;
     for (int i = 0; i < 10; i++) {
-        int generation = 0;
-
         vector<Individual> population;
-        bool found = false;
 
         // create initial population
         for (int i = 0; i < POPULATION_SIZE - 1; i++) {
@@ -241,16 +238,9 @@ int main() {
                                  course_catalog[5], course_catalog[6]};
         population.push_back(Individual(start1));
 
-        while (!found) {
+        for (int generation = 0; generation < 50; generation++) {
             // sort the population in increasing order of fitness score
             sort(population.begin(), population.end());
-
-            // if it reaches a reasonable number of generations
-            // terminate the loop
-            if (generation == 50) {
-                found = true;
-                break;
-            }
 
             // Otherwise generate new offsprings for new generation
             vector<Individual> new_generation;
@@ -280,10 +270,8 @@ int main() {
                 population[0].chromosome[i].print();
             }
             cout << "Fitness: " << population[0].fitness << "\n";
-
-            generation++;
         }
-        cout << "Generation: " << generation << "\n";
+
         for (int i = 0; i < population[0].chromosome.size(); i++) {
             population[0].chromosome[i].print();
         }
