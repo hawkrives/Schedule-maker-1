@@ -129,8 +129,7 @@ Individual Individual::mate(Individual par2, vector<course> &catalog) {
     // chromosome for offspring
     vector<course> child_chromosome(credit_limit);
 
-    int len = chromosome.size();
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < chromosome.size(); i++) {
         // random probability
         float p = random_num(0, 100) / 100;
 
