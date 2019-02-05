@@ -265,15 +265,16 @@ int main() {
                 new_generation.push_back(offspring);
             }
             population = new_generation;
+
             cout << "Generation: " << generation << "\n";
-            for (int i = 0; i < population[0].chromosome.size(); i++) {
-                population[0].chromosome[i].print();
+            for (auto pop : population[0].chromosome) {
+                pop.print();
             }
             cout << "Fitness: " << population[0].fitness << "\n";
         }
 
-        for (int i = 0; i < population[0].chromosome.size(); i++) {
-            population[0].chromosome[i].print();
+        for (auto pop : population[0].chromosome) {
+            pop.print();
         }
         cout << "Fitness: " << population[0].fitness << "\n";
         top10.push_back(population[0].chromosome);
