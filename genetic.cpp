@@ -12,7 +12,7 @@ vector<string> desired_classes = {"ENGL 185", "CSCI 241", "ART 102", "THEAT 
 int credit_limit = 4;
 //course object
 class course {
-    public: 
+    public:
         string course_num;
         string meeting_time;
         string section;
@@ -66,21 +66,21 @@ bool valid_schedule(vector<course> &list){
 }
 
 //return a random integer
-int random_num(int start, int end) 
-{ 
-    int range = (end-start)+1; 
-    int random_int = start+(rand()%range); 
-    return random_int; 
-} 
+int random_num(int start, int end)
+{
+    int range = (end-start)+1;
+    int random_int = start+(rand()%range);
+    return random_int;
+}
 
-vector<course> create_gnome(vector<course> &catalog) 
-{ 
-    int len = credit_limit; 
+vector<course> create_gnome(vector<course> &catalog)
+{
+    int len = credit_limit;
     vector<course> gnome(len);
-    for(int i = 0;i<len;i++) 
+    for(int i = 0;i<len;i++)
         gnome[i] = catalog[random_num(0, catalog.size()-1)];
-    return gnome; 
-} 
+    return gnome;
+}
 
 int class_fitness(vector<course> &chromosome){
     int fitness = 0;
@@ -119,54 +119,54 @@ class Individual {
         int cal_fitness();
 };
 
-Individual::Individual(vector<course> chromosome) 
-{ 
-    this->chromosome = chromosome; 
-    fitness = cal_fitness(); 
-}; 
-  
-// Perform mating and produce new offspring 
-Individual Individual::mate(Individual par2, vector<course> &catalog) 
-{ 
-    // chromosome for offspring 
-    vector<course> child_chromosome(credit_limit);
-  
-    int len = chromosome.size(); 
-    for(int i = 0;i<len;i++) 
-    { 
-        // random probability  
-        float p = random_num(0, 100)/100; 
-  
-        // if prob is less than 0.45, insert gene 
-        // from parent 1  
-        if(p < 0.45) 
-            child_chromosome[i] = chromosome[i]; 
-  
-        // if prob is between 0.45 and 0.90, insert 
-        // gene from parent 2 
-        else if(p < 0.90) 
-            child_chromosome[i] = par2.chromosome[i]; 
-  
-        // otherwise insert random gene(mutate),  
-        // for maintaining diversity 
-        else
-            child_chromosome[i] = catalog[random_num(0, catalog.size()-1)]; 
-    } 
-  
-    // create new Individual(offspring) using  
-    // generated chromosome for offspring 
-    return Individual(child_chromosome); 
-}; 
-  
+Individual::Individual(vector<course> chromosome)
+{
+    this->chromosome = chromosome;
+    fitness = cal_fitness();
+};
 
-// Calculate fittness score, it is the number of 
-// characters in string which differ from target 
-// string. 
-int Individual::cal_fitness() 
-{ 
-    int len = credit_limit; 
-    int fitness = 0; 
-    
+// Perform mating and produce new offspring
+Individual Individual::mate(Individual par2, vector<course> &catalog)
+{
+    // chromosome for offspring
+    vector<course> child_chromosome(credit_limit);
+
+    int len = chromosome.size();
+    for(int i = 0;i<len;i++)
+    {
+        // random probability
+        float p = random_num(0, 100)/100;
+
+        // if prob is less than 0.45, insert gene
+        // from parent 1
+        if(p < 0.45)
+            child_chromosome[i] = chromosome[i];
+
+        // if prob is between 0.45 and 0.90, insert
+        // gene from parent 2
+        else if(p < 0.90)
+            child_chromosome[i] = par2.chromosome[i];
+
+        // otherwise insert random gene(mutate),
+        // for maintaining diversity
+        else
+            child_chromosome[i] = catalog[random_num(0, catalog.size()-1)];
+    }
+
+    // create new Individual(offspring) using
+    // generated chromosome for offspring
+    return Individual(child_chromosome);
+};
+
+
+// Calculate fittness score, it is the number of
+// characters in string which differ from target
+// string.
+int Individual::cal_fitness()
+{
+    int len = credit_limit;
+    int fitness = 0;
+
     if(valid_schedule(chromosome)){
         fitness -= 20;
     }
@@ -176,24 +176,24 @@ int Individual::cal_fitness()
 
     fitness += class_fitness(chromosome);
 
-    return fitness;     
-}; 
-  
-// Overloading < operator 
-bool operator<(const Individual &ind1, const Individual &ind2) 
-{ 
-    return ind1.fitness < ind2.fitness; 
-} 
+    return fitness;
+};
+
+// Overloading < operator
+bool operator<(const Individual &ind1, const Individual &ind2)
+{
+    return ind1.fitness < ind2.fitness;
+}
 
 
 
 int main(){
-    srand((unsigned)(time(0))); 
+    srand((unsigned)(time(0)));
     ifstream ip("2018s1d.csv");
-    
+
     //check if the file is opened
     if(!ip.is_open()) cout << "ERROR: FILE NOT OPEN" << '\n';
-    
+
     string ln;
     vector<course> course_catalog;
 
@@ -232,74 +232,74 @@ int main(){
 
     vector<vector<course>> top10;
     for(int i = 0; i<10; i++){
-        int generation = 0; 
-    
-        vector<Individual> population; 
-        bool found = false; 
-    
-        // create initial population 
-        for(int i = 0;i<POPULATION_SIZE-1;i++) 
-        { 
-            vector<course> gnome = create_gnome(course_catalog); 
-            population.push_back(Individual(gnome)); 
-        } 
+        int generation = 0;
 
-        //good start 
+        vector<Individual> population;
+        bool found = false;
+
+        // create initial population
+        for(int i = 0;i<POPULATION_SIZE-1;i++)
+        {
+            vector<course> gnome = create_gnome(course_catalog);
+            population.push_back(Individual(gnome));
+        }
+
+        //good start
 
         vector<course> start1 = {course_catalog[1], course_catalog[3], course_catalog[5], course_catalog[6]};
         population.push_back(Individual(start1));
 
-        while(! found) 
-        { 
-            // sort the population in increasing order of fitness score 
-            sort(population.begin(), population.end()); 
-    
+        while(! found)
+        {
+            // sort the population in increasing order of fitness score
+            sort(population.begin(), population.end());
+
             //if it reaches a reasonable number of generations
-            // terminate the loop 
-            if(generation == 50) 
-            { 
-                found = true; 
-                break; 
-            } 
-    
-            // Otherwise generate new offsprings for new generation 
-            vector<Individual> new_generation; 
-    
-            // Perform Elitism, that mean 10% of fittest population 
-            // goes to the next generation 
-            int s = (10*POPULATION_SIZE)/100; 
-            for(int i = 0;i<s;i++) 
-                new_generation.push_back(population[i]); 
-    
-            // From 50% of fittest population, Individuals 
-            // will mate to produce offspring 
-            s = (90*POPULATION_SIZE)/100; 
-            for(int i = 0;i<s;i++) 
-            { 
-                int len = population.size(); 
-                int r = random_num(0, 50); 
-                Individual parent1 = population[r]; 
-                r = random_num(0, 50); 
-                Individual parent2 = population[r]; 
-                Individual offspring = parent1.mate(parent2, course_catalog); 
-                new_generation.push_back(offspring);  
-            } 
-            population = new_generation; 
-            cout<< "Generation: " << generation << "\n"; 
+            // terminate the loop
+            if(generation == 50)
+            {
+                found = true;
+                break;
+            }
+
+            // Otherwise generate new offsprings for new generation
+            vector<Individual> new_generation;
+
+            // Perform Elitism, that mean 10% of fittest population
+            // goes to the next generation
+            int s = (10*POPULATION_SIZE)/100;
+            for(int i = 0;i<s;i++)
+                new_generation.push_back(population[i]);
+
+            // From 50% of fittest population, Individuals
+            // will mate to produce offspring
+            s = (90*POPULATION_SIZE)/100;
+            for(int i = 0;i<s;i++)
+            {
+                int len = population.size();
+                int r = random_num(0, 50);
+                Individual parent1 = population[r];
+                r = random_num(0, 50);
+                Individual parent2 = population[r];
+                Individual offspring = parent1.mate(parent2, course_catalog);
+                new_generation.push_back(offspring);
+            }
+            population = new_generation;
+            cout<< "Generation: " << generation << "\n";
             for(int i = 0; i < population[0].chromosome.size(); i++){
                 population[0].chromosome[i].print();
             }
-            cout<< "Fitness: "<< population[0].fitness << "\n"; 
-    
-            generation++; 
-        } 
-        cout<< "Generation: " << generation << "\n"; 
+            cout<< "Fitness: "<< population[0].fitness << "\n";
+
+            generation++;
+        }
+        cout<< "Generation: " << generation << "\n";
         for(int i = 0; i < population[0].chromosome.size(); i++){
             population[0].chromosome[i].print();
         }
         cout<< "Fitness: "<< population[0].fitness << "\n";
         top10.push_back(population[0].chromosome);
-    } 
+    }
     for(int i = 0; i<10; i++){
         for(int j = 0; j < top10[i].size(); j++){
             top10[i][j].print();
