@@ -229,7 +229,6 @@ int main() {
         }
 
         // good start
-
         vector<course> start1 = {course_catalog[1], course_catalog[3],
                                  course_catalog[5], course_catalog[6]};
         population.push_back(Individual(start1));
@@ -261,26 +260,21 @@ int main() {
                 new_generation.push_back(offspring);
             }
             population = new_generation;
-
-            cout << "Generation: " << generation << "\n";
-            for (auto pop : population[0].chromosome) {
-                pop.print();
-            }
-            cout << "Fitness: " << population[0].fitness << "\n";
         }
 
-        for (auto pop : population[0].chromosome) {
-            pop.print();
-        }
-        cout << "Fitness: " << population[0].fitness << "\n";
+        cout << "Iteration " << i + 1 << "; fitness: " << population[0].fitness
+             << endl;
+
         top10.push_back(population[0].chromosome);
     }
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < top10[i].size(); j++) {
-            top10[i][j].print();
+
+    for (int i = 0; i < top10.size(); i++) {
+        cout << endl;
+        cout << "Schedule " << i + 1 << endl;
+        for (auto course : top10[i]) {
+            cout << "- ";
+            course.print();
         }
-        cout << "******************************************************"
-             << endl;
     }
     return 0;
 }
