@@ -218,16 +218,6 @@ int main() {
 
     ip.close();
 
-    for (int i = 0; i < course_catalog.size(); i++) {
-        course_catalog[i].print();
-    }
-
-    vector<course> test2 = create_gnome(course_catalog);
-    cout << "here" << endl;
-    vector<course> test = {course_catalog[2], course_catalog[3],
-                           course_catalog[4], course_catalog[5]};
-    cout << course_catalog.size() << endl;
-
     vector<vector<course>> top10;
     for (int i = 0; i < 10; i++) {
         vector<Individual> population;
