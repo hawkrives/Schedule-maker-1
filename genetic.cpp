@@ -81,8 +81,9 @@ int random_num(int start, int end) {
 vector<course> create_gnome(vector<course> &catalog) {
     int len = credit_limit;
     vector<course> gnome(len);
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < len; i++) {
         gnome[i] = catalog[random_num(0, catalog.size() - 1)];
+    }
     return gnome;
 }
 
@@ -138,20 +139,19 @@ Individual Individual::mate(Individual par2, vector<course> &catalog) {
         // random probability
         float p = random_num(0, 100) / 100;
 
-        // if prob is less than 0.45, insert gene
-        // from parent 1
-        if (p < 0.45)
+        if (p < 0.45) {
+            // if prob is less than 0.45, insert gene
+            // from parent 1
             child_chromosome[i] = chromosome[i];
-
-        // if prob is between 0.45 and 0.90, insert
-        // gene from parent 2
-        else if (p < 0.90)
+        } else if (p < 0.90) {
+            // if prob is between 0.45 and 0.90, insert
+            // gene from parent 2
             child_chromosome[i] = par2.chromosome[i];
-
-        // otherwise insert random gene(mutate),
-        // for maintaining diversity
-        else
+        } else {
+            // otherwise insert random gene(mutate),
+            // for maintaining diversity
             child_chromosome[i] = catalog[random_num(0, catalog.size() - 1)];
+        }
     }
 
     // create new Individual(offspring) using
@@ -187,8 +187,9 @@ int main() {
     ifstream ip("2018s1d.csv");
 
     // check if the file is opened
-    if (!ip.is_open())
+    if (!ip.is_open()) {
         cout << "ERROR: FILE NOT OPEN" << '\n';
+    }
 
     string ln;
     vector<course> course_catalog;
@@ -262,8 +263,9 @@ int main() {
             // Perform Elitism, that mean 10% of fittest population
             // goes to the next generation
             int s = (10 * POPULATION_SIZE) / 100;
-            for (int i = 0; i < s; i++)
+            for (int i = 0; i < s; i++) {
                 new_generation.push_back(population[i]);
+            }
 
             // From 50% of fittest population, Individuals
             // will mate to produce offspring
