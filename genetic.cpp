@@ -36,9 +36,16 @@ class course {
     }
 
     void print() {
-        cout << "course is " << course_num << " section is " << section
-             << " meeting time is " << meeting_time << " GE is " << GE << "*"
-             << endl;
+        cout << course_num;
+        if (section.length()) {
+            cout << section;
+        }
+        if (GE.length()) {
+            cout << " [" << GE << "]";
+        }
+        if (meeting_time.length()) {
+            cout << "; " << meeting_time << endl;
+        }
     }
 };
 
