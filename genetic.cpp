@@ -53,19 +53,14 @@ bool course_conflict(course &a, course &b) {
 // see if the class schedule has any conflicts
 bool valid_schedule(vector<course> &list) {
     for (int i = 0; i < list.size(); i++) {
-        int j = 0;
-        while (j < i) {
+        for (int j = 0; j < list.size(); j++) {
+            if (i == j) {
+                continue;
+            }
+
             if (course_conflict(list[i], list[j])) {
                 return false;
             }
-            j++;
-        }
-        j++;
-        while (j < list.size()) {
-            if (course_conflict(list[i], list[j])) {
-                return false;
-            }
-            j++;
         }
     }
     return true;
